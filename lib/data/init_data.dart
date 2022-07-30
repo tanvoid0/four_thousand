@@ -1,14 +1,17 @@
 import 'package:four_thousand/controller/auth_controller.dart';
 import 'package:four_thousand/controller/bindings/auth_binding.dart';
 import 'package:four_thousand/controller/bindings/cart_binding.dart';
+import 'package:four_thousand/controller/bindings/clock_binding.dart';
 import 'package:four_thousand/controller/bindings/product_binding.dart';
 import 'package:four_thousand/controller/bindings/splash_binding.dart';
 import 'package:four_thousand/controller/cart_controller.dart';
+import 'package:four_thousand/controller/clock_controller.dart';
 import 'package:four_thousand/controller/product_controller.dart';
 import 'package:four_thousand/controller/splash_controller.dart';
 import 'package:four_thousand/models/airsoft.dart';
 import 'package:four_thousand/views/auth_screen.dart';
 import 'package:four_thousand/views/cart_screen.dart';
+import 'package:four_thousand/views/clock_screen.dart';
 import 'package:four_thousand/views/product_screen.dart';
 import 'package:four_thousand/views/splash_screen.dart';
 import 'package:get/get.dart';
@@ -74,5 +77,10 @@ List<GetPage> routes = [
     name: CartController.routeName,
     page: () => CartScreen(),
     binding: CartBinding(),
+  ),
+  GetPage(
+    name: ClockController.routeName,
+    page: () => ClockScreen(),
+    binding: ClockBinding(),
   )
 ];

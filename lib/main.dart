@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:four_thousand/controller/clock_controller.dart';
 import 'package:four_thousand/controller/splash_controller.dart';
 import 'package:four_thousand/data/init_data.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'FourThousand',
       theme: ThemeData.dark(),
       getPages: [...routes],
-      initialRoute: SplashController.routeName,
+      initialRoute: ClockController.routeName,
     );
   }
 }

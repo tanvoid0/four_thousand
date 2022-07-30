@@ -92,7 +92,7 @@ class CartController extends GetxController {
       Get.back();
       Get.snackbar("Message", "Transaction succeed !",
           colorText: Colors.white,
-          backgroundColor: Color(0xff4d4d4d),
+          backgroundColor: const Color(0xff4d4d4d),
           snackPosition: SnackPosition.BOTTOM);
     });
   }

@@ -60,7 +60,7 @@ class CartScreen extends StatelessWidget {
                                   primary: Colors.yellow),
                               child: Container(
                                 width: double.infinity,
-                                child: Center(
+                                child: const Center(
                                   child: Text(
                                     "Proceed",
                                     style: TextStyle(color: Colors.black),
