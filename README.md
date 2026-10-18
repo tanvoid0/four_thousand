@@ -53,8 +53,9 @@ npm run typecheck   # tsc --noEmit
 ## 🌐 Deploy to GitHub Pages
 
 1. Push to a GitHub repo.
-2. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
-3. Push to `main` — the workflow in `.github/workflows/deploy.yml` builds and deploys automatically.
+2. Push to `main` — the workflow in `.github/workflows/deploy.yml` builds, **enables Pages for you**, and deploys. No manual Pages toggle needed.
+
+> If your org restricts Actions enabling Pages, do it once by hand: **Settings → Pages → Source: GitHub Actions**, then re-run the workflow.
 
 The workflow sets the asset base path to `/<your-repo-name>/` for you, so project pages (`https://<user>.github.io/<repo>/`) just work.
 
