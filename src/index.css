@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* Colours live in src/theme.ts (applied to :root at boot). This file holds
+   only structural tokens + rules that reference the colour variables. */
+:root {
+  --cell-size: 10px;
+  --cell-gap: 3px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background:
+    radial-gradient(900px 520px at 12% -8%, var(--accent-soft), transparent 60%),
+    radial-gradient(760px 520px at 100% -4%, rgba(255, 255, 255, 0.04), transparent 58%),
+    linear-gradient(180deg, var(--bg-2), var(--bg) 44%);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.012em;
+}
+
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ---- full week grid (collapsed by default) ---- */
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(52, var(--cell-size));
+  gap: var(--cell-gap);
+}
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  border-radius: 2px;
+  background: var(--cell-future);
+  animation: cell-in 0.4s var(--ease-out) both;
+  animation-delay: calc(var(--i) * 0.2ms);
+}
+.cell.lived {
+  background: var(--cell-lived);
+}
+.cell.current {
+  background: var(--cell-current);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 8px 1px var(--accent);
+}
+.cell.event {
+  box-shadow: 0 0 0 1px var(--bg);
+}
+
+@keyframes cell-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cell {
+    animation: none !important;
+  }
+}
+
+/* scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-2) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface-2);
+  border-radius: 99px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+
+/* form fields */
+.input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  padding: 0.5rem 0.65rem;
+  font-size: 0.875rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s var(--ease-out);
+}
+.input:focus {
+  border-color: var(--accent);
+}
+.input option {
+  background: #141418;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
