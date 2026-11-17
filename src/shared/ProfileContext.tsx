@@ -22,7 +22,8 @@ interface Ctx {
 
 const ProfileCtx = createContext<Ctx | null>(null);
 
-function resolve(): { profile: Profile; source: ProfileSource } {
+/** exported for tests */
+export function resolve(): { profile: Profile; source: ProfileSource } {
   // saved-in-browser outranks the baked-in env profile: Settings promises it, and a Save that vanishes on reload is data loss
   const fromLocal = loadProfile();
   if (fromLocal) return { profile: fromLocal, source: "local" };
