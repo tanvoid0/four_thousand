@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -10,9 +11,10 @@ permissions:
   pages: write
   id-token: write
 
-# one deploy at a time; let a running one finish
+# one deploy at a time; let a running one finish. PR checks get their own group so one
+# can never queue behind a deploy or replace a pending deploy of main
 concurrency:
-  group: pages
+  group: ${{ github.event_name == 'pull_request' && github.ref || 'pages' }}
   cancel-in-progress: false
 
 jobs:
@@ -25,6 +27,9 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # checks gate the deploy: a failure stops this job, so `deploy` never starts
+      - run: npm run typecheck
+      - run: npm test
       # --base makes asset paths work from https://<user>.github.io/<repo>/
       - run: npm run build -- --base=/${{ github.event.repository.name }}/
         env:
@@ -35,17 +40,21 @@ jobs:
           VITE_NAME: ${{ secrets.VITE_NAME }}
           VITE_LIFESPAN: ${{ secrets.VITE_LIFESPAN }}
           VITE_EVENTS: ${{ secrets.VITE_EVENTS }}
+      # Pages side effects (self-enable, artifact) are deploy-only: PR runs stop after the build
       - uses: actions/configure-pages@v5
+        if: github.event_name != 'pull_request'
         with:
           # self-enable Pages on first run so a fresh clone/fork needs no
           # manual toggle (the job's pages: write permission allows this)
           enablement: true
       - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
         with:
           path: dist
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
