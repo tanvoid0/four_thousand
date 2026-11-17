@@ -48,6 +48,7 @@ Other scripts:
 npm run build       # production build to dist/
 npm run preview     # serve the built dist/ locally
 npm run typecheck   # tsc --noEmit
+npm test            # vitest run
 ```
 
 ## 🌐 Deploy to GitHub Pages
