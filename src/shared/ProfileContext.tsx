@@ -11,8 +11,8 @@ interface Ctx {
   profile: Profile;
   source: ProfileSource;
   isDemo: boolean;
-  /** persist to this browser and switch to personal mode */
-  save: (p: Profile) => void;
+  /** persist to this browser and switch to personal mode; false = the write failed, so it lasts this session only */
+  save: (p: Profile) => boolean;
   /** forget the saved profile and drop back to a fresh random demo */
   resetToDemo: () => void;
   settingsOpen: boolean;
@@ -23,10 +23,11 @@ interface Ctx {
 const ProfileCtx = createContext<Ctx | null>(null);
 
 function resolve(): { profile: Profile; source: ProfileSource } {
-  const fromEnv = envProfile();
-  if (fromEnv) return { profile: fromEnv, source: "env" };
+  // saved-in-browser outranks the baked-in env profile: Settings promises it, and a Save that vanishes on reload is data loss
   const fromLocal = loadProfile();
   if (fromLocal) return { profile: fromLocal, source: "local" };
+  const fromEnv = envProfile();
+  if (fromEnv) return { profile: fromEnv, source: "env" };
   return { profile: randomDemo(), source: "demo" };
 }
 
@@ -36,8 +37,9 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const save = useCallback((p: Profile) => {
-    saveProfile(p);
-    setState({ profile: p, source: "local" });
+    const ok = saveProfile(p);
+    setState({ profile: p, source: "local" }); // applies even if the write failed — the session keeps working
+    return ok;
   }, []);
 
   const resetToDemo = useCallback(() => {

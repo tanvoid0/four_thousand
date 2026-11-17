@@ -12,8 +12,8 @@ import { coerceProfile } from "./storage";
  *   VITE_LIFESPAN   years (def. 80)  |
  *   VITE_EVENTS     JSON array      /
  *
- * Returns null when nothing is configured — the app then falls back to the
- * browser's saved profile, and finally to a random demo.
+ * Returns null when nothing is configured — the app then shows a random demo.
+ * A profile saved in the browser outranks these vars (see resolve() in ProfileContext).
  */
 export function envProfile(): Profile | null {
   const env = import.meta.env;

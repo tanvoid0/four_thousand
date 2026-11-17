@@ -47,11 +47,13 @@ export function loadProfile(): Profile | null {
   }
 }
 
-export function saveProfile(p: Profile): void {
+/** false when the browser refused the write (private mode / quota) — callers must tell the user */
+export function saveProfile(p: Profile): boolean {
   try {
     localStorage.setItem(KEY, JSON.stringify(p));
+    return true;
   } catch {
-    /* private mode / quota — the app still works for this session */
+    return false;
   }
 }
 

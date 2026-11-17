@@ -23,13 +23,13 @@ Your birth date and events are **never sent anywhere**. The app resolves them in
 
 | Priority | Source | Good for | Visibility |
 |---|---|---|---|
-| 1 | **Environment variables** (`.env` locally, or Actions secrets on deploy) | A personal build that always boots to your life | As public/private as the site you deploy |
-| 2 | **Browser `localStorage`** (⚙ My life → Save) | Trying it out, private to one browser | Only on your machine |
+| 1 | **Browser `localStorage`** (⚙ My life → Save) | Trying it out, private to one browser — also overrides a baked-in profile | Only on your machine |
+| 2 | **Environment variables** (`.env` locally, or Actions secrets on deploy) | A personal build that boots to your life | As public/private as the site you deploy |
 | 3 | **Random demo** | What visitors see on the public repo | Fake data |
 
 **Option A — just use it in your browser:** click **⚙ My life**, enter your details, Save. Done. Private to that browser.
 
-**Option B — pin it with `.env`:** copy `.env.example` to `.env`, set `VITE_BIRTHDATE` (and optionally `VITE_NAME`, `VITE_LIFESPAN`, `VITE_EVENTS`), run the app. It now always boots to your life. `.env` is gitignored.
+**Option B — pin it with `.env`:** copy `.env.example` to `.env`, set `VITE_BIRTHDATE` (and optionally `VITE_NAME`, `VITE_LIFESPAN`, `VITE_EVENTS`), run the app. It now boots to your life (unless a profile saved in that browser overrides it). `.env` is gitignored.
 
 **Option C — deploy your own:** see *Deploy* below. Keep it a demo, or add Actions secrets to bake your life into your own published site.
 

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { EventKind, LifeEvent, Profile } from "../types";
 import { coerceProfile, exportProfile, randomColor } from "../lib/storage";
-import { isValidISO } from "../lib/time";
+import { isValidISO, toISO } from "../lib/time";
 import { EVENT_COLORS } from "../theme";
 import { useProfile } from "./ProfileContext";
 import { Button } from "./ui";
@@ -34,7 +34,7 @@ export default function Settings() {
       ...d,
       events: [
         ...d.events,
-        { id: crypto.randomUUID(), title: "", date: new Date().toISOString().slice(0, 10), kind: "milestone", color: randomColor() },
+        { id: crypto.randomUUID(), title: "", date: toISO(new Date()), kind: "milestone", color: randomColor() },
       ],
     }));
   const removeEvent = (id: string) => setDraft((d) => ({ ...d, events: d.events.filter((e) => e.id !== id) }));
@@ -194,14 +194,20 @@ export default function Settings() {
                 variant="primary"
                 disabled={!valid}
                 onClick={() => {
-                  save(draft);
-                  closeSettings();
+                  if (save(draft)) closeSettings();
+                  else alert("Couldn't save to this browser (storage is blocked or full). Your changes last this session only — use Export JSON to keep a copy.");
                 }}
                 className="flex-1"
               >
                 Save to this browser
               </Button>
-              <Button variant="danger" onClick={resetToDemo}>
+              <Button
+                variant="danger"
+                onClick={() => {
+                  // ponytail: native confirm(), like the alert()s above; swap for an in-app dialog if the styling ever matters
+                  if (confirm("Reset to a random demo? The profile saved in this browser will be deleted.")) resetToDemo();
+                }}
+              >
                 Reset to demo
               </Button>
             </footer>
