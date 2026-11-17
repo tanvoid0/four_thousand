@@ -2,8 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Profile } from "../types";
 import { coerceProfile, loadProfile, saveProfile } from "./storage";
 
-// the key is private to storage.ts and is the upgrade contract (saved profiles live under it),
-// so it is pinned here as a literal on purpose
+// the key is the upgrade contract (saved profiles live under it), so it is pinned here as a
+// literal on purpose instead of importing storage.ts's KEY
 const KEY = "four_thousand.profile.v1";
 
 const profile: Profile = {

@@ -2,7 +2,7 @@ import type { LifeEvent, Profile } from "../types";
 import { isValidISO } from "./time";
 import { eventColor } from "../theme";
 
-const KEY = "four_thousand.profile.v1";
+export const KEY = "four_thousand.profile.v1";
 
 /** event colours live in the single theme source */
 export const randomColor = eventColor;
@@ -65,12 +65,16 @@ export function clearProfile(): void {
   }
 }
 
-export function exportProfile(p: Profile): void {
-  const blob = new Blob([JSON.stringify(p, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
+/** hand `text` to the browser as a .json download */
+export function downloadJSON(text: string, filename: string): void {
+  const url = URL.createObjectURL(new Blob([text], { type: "application/json" }));
   const a = document.createElement("a");
   a.href = url;
-  a.download = "four-thousand-weeks.json";
+  a.download = filename;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+export function exportProfile(p: Profile): void {
+  downloadJSON(JSON.stringify(p, null, 2), "four-thousand-weeks.json");
 }
