@@ -8,6 +8,7 @@ dist-ssr/
 # local env / personal config (keep anything private out of the repo)
 .env
 .env.*
+!.env.example
 *.local
 
 # editor / os
