@@ -22,14 +22,24 @@ export function totalWeeks(lifespanYears: number): number {
   return Math.round(lifespanYears) * WEEKS_PER_ROW;
 }
 
+/** UTC day number of `d`'s calendar day: day math on it can't be skewed by a DST hour, unlike dividing local-time ms */
+function dayNum(d: Date): number {
+  return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / MS_DAY;
+}
+
 /** week index of `when` counted from `birth` (0-based, can be negative/over) */
 export function weekIndex(birth: Date, when: Date): number {
-  return Math.floor((when.getTime() - birth.getTime()) / MS_WEEK);
+  return Math.floor((dayNum(when) - dayNum(birth)) / 7);
+}
+
+/** local midnight on the first day of week `week` (0-based) counted from `birth`: whole calendar days, so DST can't move it */
+export function weekStart(birth: Date, week: number): Date {
+  return new Date(birth.getFullYear(), birth.getMonth(), birth.getDate() + week * 7);
 }
 
 /** the moment the grid runs out */
 export function lifeEnd(birth: Date, lifespanYears: number): Date {
-  return new Date(birth.getTime() + totalWeeks(lifespanYears) * MS_WEEK);
+  return weekStart(birth, totalWeeks(lifespanYears));
 }
 
 export function ageOn(birth: Date, when: Date): number {
@@ -74,9 +84,10 @@ export function breakdown(ms: number): Span {
 /** next time an annual date lands, on/after `from` */
 export function nextOccurrence(dateISO: string, from: Date): Date {
   const d = parseDate(dateISO);
-  const occ = new Date(from.getFullYear(), d.getMonth(), d.getDate());
-  if (occ.getTime() < from.getTime()) occ.setFullYear(from.getFullYear() + 1);
-  return occ;
+  // rebuilt per year: a Feb 29 rolls to Mar 1 in a non-leap year, and moving that Mar 1 forward would never find the next Feb 29
+  const inYear = (y: number) => new Date(y, d.getMonth(), d.getDate());
+  const occ = inYear(from.getFullYear());
+  return occ.getTime() < from.getTime() ? inYear(from.getFullYear() + 1) : occ;
 }
 
 /** the target date a countdown/recurring event points at, relative to now */

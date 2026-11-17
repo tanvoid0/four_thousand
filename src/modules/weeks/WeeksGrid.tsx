@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import type { LifeEvent } from "../../types";
-import { MS_WEEK, ageOn, fmtDate, parseDate, totalWeeks, weekIndex } from "../../lib/time";
+import { ageOn, fmtDate, parseDate, totalWeeks, weekIndex, weekStart } from "../../lib/time";
 
 interface Props {
   birth: Date;
@@ -79,7 +79,7 @@ export default function WeeksGrid({ birth, lifespanYears, now, events }: Props) 
 
   const tipData = tip
     ? (() => {
-        const date = new Date(birth.getTime() + tip.week * MS_WEEK);
+        const date = weekStart(birth, tip.week);
         return { age: ageOn(birth, date), date: fmtDate(date), items: markers.get(tip.week)?.items ?? [] };
       })()
     : null;
