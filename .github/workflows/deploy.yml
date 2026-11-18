@@ -62,3 +62,17 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+      # Keep the repo's homepage pointing at the live demo. GITHUB_TOKEN can't edit repo
+      # settings, so this needs a PAT with repo admin in the HOMEPAGE_TOKEN secret;
+      # without it the step is skipped.
+      - name: Link demo as repo homepage
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.HOMEPAGE_TOKEN }}
+          DEMO_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          if [ -n "$GH_TOKEN" ]; then
+            gh repo edit "$GITHUB_REPOSITORY" --homepage "$DEMO_URL"
+          else
+            echo "HOMEPAGE_TOKEN not set; skipping"
+          fi
