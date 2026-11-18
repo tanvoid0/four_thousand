@@ -19,8 +19,7 @@ export const MODULES: LifeModule[] = [
     tagline: "Your whole life is about four thousand weeks. See where you are in it, and what's left.",
     accent: "#1fa5c4", // cyan — sky & water of the cover
     accent2: "#f0c04c", // gold — the cover's subtitle
-    // drop the real jacket at public/covers/four-thousand-weeks.jpg to show it;
-    // until then a designed cover in the same palette is shown.
+    // jacket image is not bundled (publisher artwork); the designed fallback cover shows.
     cover: { bg: "linear-gradient(180deg,#3fb6d6,#1c93b4 58%,#14728d)", ink: "#ffffff", image: "/covers/four-thousand-weeks.jpg" },
     status: "live",
     load: () => import("./weeks/WeeksPage"),

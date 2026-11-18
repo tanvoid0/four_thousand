@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite'
 // Change it to '/' if you deploy to a custom domain or a <user>.github.io root repo.
 const BASE = '/four_thousand/'
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command, isPreview }) => ({
   plugins: [react(), tailwindcss()],
-  base: command === 'build' ? BASE : '/',
+  base: command === 'build' || isPreview ? BASE : '/',
 }))
