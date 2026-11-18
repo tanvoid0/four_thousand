@@ -1,5 +1,7 @@
 # Four Thousand Weeks
 
+**[▶ Live demo](https://tanvoid0.github.io/four_thousand/)** · [![Deploy](https://github.com/tanvoid0/four_thousand/actions/workflows/deploy.yml/badge.svg)](https://github.com/tanvoid0/four_thousand/actions/workflows/deploy.yml)
+
 > The average human life is about **four thousand weeks**. This is a way to *see* yours.
 
 An open-source, privacy-first web app that draws your whole life as a grid of ~4,000 squares — one per week — marked with the events that matter and a live countdown of the weeks you have left. Clone it, set your birth date, and make it your own.
