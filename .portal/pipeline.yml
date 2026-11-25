@@ -1,0 +1,14 @@
+version: 1
+actions:
+  typecheck:
+    name: Typecheck
+    run: npm run typecheck
+    category: check
+workflows:
+  gate:
+    steps:
+      - action: install
+      - action: typecheck
+        needs: [install]
+      - action: build
+        needs: [typecheck]
